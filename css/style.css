@@ -238,9 +238,6 @@ section h2 {
   margin-top: 20px;
 }
 
-.details-bottom {
-}
-
 .details-bottom li {
   margin: 15px 0;
   padding-bottom: 8px;
@@ -336,6 +333,10 @@ section h2 {
 
 .alert-success {
   background: green;
+}
+
+.alert-warning {
+  background: orange;
 }
 
 .alert-error {
