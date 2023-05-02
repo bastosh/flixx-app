@@ -13,8 +13,7 @@
     <link rel="stylesheet" href="lib/fontawesome.css" />
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/spinner.css" />
-    <script src="js/script.js" defer></script>
-    <title>Flixx | Search Movies & Shows</title>
+    <title>Flixx | Rechercher des films ou séries</title>
   </head>
   <body>
     <header class="main-header">
@@ -23,10 +22,10 @@
         <nav>
           <ul>
             <li>
-              <a class="nav-link" href="/">Movies</a>
+              <a class="nav-link" href="/">Films</a>
             </li>
             <li>
-              <a class="nav-link" href="/shows.html">TV Shows</a>
+              <a class="nav-link" href="/shows.html">Séries</a>
             </li>
           </ul>
         </nav>
@@ -40,9 +39,9 @@
         <form action="/search.html" class="search-form">
           <div class="search-radio">
             <input type="radio" id="movie" name="type" value="movie" checked />
-            <label for="movies">Movies</label>
+            <label for="movies">Films</label>
             <input type="radio" id="tv" name="type" value="tv" />
-            <label for="shows">TV Shows</label>
+            <label for="shows">Séries</label>
           </div>
           <div class="search-flex">
             <input
@@ -180,5 +179,7 @@
     </footer>
 
     <div class="spinner"></div>
+
+    <script type="module" src="/js/script.js"></script>
   </body>
 </html>

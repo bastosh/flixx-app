@@ -2,10 +2,16 @@ const API_KEY = import.meta.env.VITE_API_KEY
 const API_URL = import.meta.env.VITE_API_URL
 
 const global = {
-    currentPage: window.location.pathname
+    currentPage: window.location.pathname,
+    search: {
+        term: '',
+        type: '',
+        page: 1,
+        totalPages: 1,
+      },
 }
 
-async function fetchApiData(enpoint) {
+async function fetchAPIData(enpoint) {
     showSpinner()
     const response = await fetch(`${API_URL}/${enpoint}?api_key=${API_KEY}&language=fr-FR`)
     const data = await response.json()
@@ -14,7 +20,7 @@ async function fetchApiData(enpoint) {
 }
 
 async function displayPopularMovies() {
-    const { results } = await fetchApiData('movie/popular')
+    const { results } = await fetchAPIData('movie/popular')
     results.forEach(movie => {
         const div = document.createElement('div')
         div.classList.add('card')
@@ -48,7 +54,7 @@ async function displayPopularMovies() {
 
 async function displayMovieDetails() {
     const movieId = window.location.search.split('=')[1]
-    const movie = await fetchApiData(`movie/${movieId}`)
+    const movie = await fetchAPIData(`movie/${movieId}`)
 
     displayBackgroundImage('movie', movie.backdrop_path)
 
@@ -104,7 +110,7 @@ async function displayMovieDetails() {
 
 async function displayShowDetails() {
     const showId = window.location.search.split('=')[1]
-    const show = await fetchApiData(`tv/${showId}`)
+    const show = await fetchAPIData(`tv/${showId}`)
 
     displayBackgroundImage('show', show.backdrop_path)
 
@@ -179,7 +185,7 @@ function displayBackgroundImage(type, backgroundPath) {
   }
 
 async function displayPopularShows() {
-    const { results } = await fetchApiData('tv/popular')
+    const { results } = await fetchAPIData('tv/popular')
     results.forEach(show => {
         const div = document.createElement('div')
         div.classList.add('card')
@@ -211,8 +217,48 @@ async function displayPopularShows() {
     })
 }
 
+async function search() {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+  
+    global.search.type = urlParams.get('type');
+    global.search.term = urlParams.get('search-term');
+  
+    if (global.search.term !== '' && global.search.term !== null) {
+      const results = await searchAPIData();
+      console.log(results);
+    } else {
+      showAlert('Please enter a search term');
+    }
+  }
+
+  async function searchAPIData() { 
+
+    showSpinner();
+
+    const response = await fetch(
+      `${API_URL}/search/${global.search.type}?api_key=${API_KEY}&language=en-US&query=${global.search.term}`
+    );
+  
+    const data = await response.json();
+  
+    hideSpinner();
+  
+    return data;
+  }
+  
+  // Show Alert
+  function showAlert(message, className) {
+    const alertEl = document.createElement('div');
+    alertEl.classList.add('alert', className);
+    alertEl.appendChild(document.createTextNode(message));
+    document.querySelector('#alert').appendChild(alertEl);
+  
+    setTimeout(() => alertEl.remove(), 3000);
+  }
+
 async function displaySlider() {
-    const { results } = await fetchApiData('movie/now_playing')
+    const { results } = await fetchAPIData('movie/now_playing')
   
     results.forEach((movie) => {
       const div = document.createElement('div')
@@ -294,7 +340,7 @@ function initApp() {
             displayShowDetails()
             break
         case '/search.html':
-            console.log('Search')
+            search()
             break
     }
     highlightActiveLink()
